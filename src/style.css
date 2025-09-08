@@ -1,0 +1,15 @@
+:root {
+  --brand: #0d6efd;
+}
+[data-theme="dark"] {
+  --bs-body-bg: #0f1115;
+  --bs-body-color: #e5e7eb;
+}
+
+.badge.bg-primary-subtle {
+  background: #e7f1ff;
+  color: #0d6efd;
+  border: 1px solid #cfe2ff;
+}
+
+.card { border-radius: 14px; }
