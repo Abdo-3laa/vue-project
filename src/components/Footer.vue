@@ -53,12 +53,11 @@
           © 2025 Care Clinic. All rights reserved.
         </p>
         <small>Made With ❤ Abdelrahman Alaa</small>
-        <div class="d-flex align-items-center gap-3">
-          <span class="small">We Accept:</span>
-          <i class="bi bi-credit-card fs-5"></i>
-          <i class="bi bi-paypal fs-5"></i>
-          <i class="bi bi-apple fs-5"></i>
-          <i class="bi bi-google fs-5"></i>
+
+        <!-- Clinic Highlight instead of Payment Methods -->
+        <div class="d-flex align-items-center gap-2 highlight-box">
+          <i class="bi bi-phone-vibrate fs-5 text-warning"></i>
+          <span class="small fw-bold">24/7 Emergency Support</span>
         </div>
       </div>
     </div>
@@ -121,5 +120,13 @@ const sections = [
   box-shadow: 0 0 10px var(--bs-warning);
   transform: scale(1.1);
   transition: all 0.3s ease-in-out;
+}
+
+/* Highlight box */
+.highlight-box {
+  padding: 6px 10px;
+  border: 1px solid var(--bs-warning);
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(255, 193, 7, 0.4);
 }
 </style>

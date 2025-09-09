@@ -17,7 +17,7 @@ export const doctors = [
 
   {
     id: 1,
-    name: 'Dr. Sara Ahmed',
+    name: 'Dr. Aya Osama',
     specialty: 'Dentist',
     location: 'Cairo',
     photo: 'https://i.pinimg.com/736x/65/20/71/652071f939a14b270f4e92281a9e305c.jpg', // male doctor waving (vector)

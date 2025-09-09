@@ -2,9 +2,15 @@
   <div :class="[theme, 'min-vh-100 py-4']">
     <div class="container">
       <!-- Hero Section -->
-      <div class="hero-section text-center py-5 mb-4" :class="theme === 'dark' ? 'bg-dark text-light' : 'bg-light text-dark'">
+      <div
+        class="hero-section text-center py-5 mb-4"
+        :class="theme === 'dark' ? 'bg-dark text-light' : 'bg-light text-dark'"
+      >
         <h1 class="display-5 fw-bold mb-3">Find Your Trusted Doctor</h1>
-        <p class="lead mb-0" :class="theme === 'dark' ? 'text-light-50' : 'text-muted'">
+        <p
+          class="lead mb-0"
+          :class="theme === 'dark' ? 'text-light-50' : 'text-muted'"
+        >
           Browse our expert medical team and book your appointment with ease.
         </p>
       </div>
@@ -13,7 +19,12 @@
       <div class="row g-3 align-items-end mb-4">
         <div class="col-12 col-md-6">
           <label class="form-label fw-semibold">Search</label>
-          <input v-model="q" type="text" class="form-control" placeholder="Name, specialty or location..." />
+          <input
+            v-model="q"
+            type="text"
+            class="form-control"
+            placeholder="Name, specialty or location..."
+          />
         </div>
         <div class="col-12 col-md-4">
           <label class="form-label fw-semibold">Specialty</label>
@@ -22,7 +33,10 @@
           </select>
         </div>
         <div class="col-12 col-md-2 d-grid">
-          <button class="btn btn-outline-secondary" @click="q=''; specialty='All'; page=1">
+          <button
+            class="btn btn-outline-secondary"
+            @click="q = ''; specialty = 'All'; page = 1"
+          >
             <i class="bi bi-x-circle me-1"></i> Clear
           </button>
         </div>
@@ -31,7 +45,11 @@
       <!-- Doctors Grid -->
       <div class="row g-4">
         <transition-group name="fade" tag="div" class="row g-4">
-          <div v-for="d in paged" :key="d.id" class="col-12 col-sm-6 col-md-4">
+          <div
+            v-for="d in paged"
+            :key="d.id"
+            class="col-12 col-sm-6 col-md-4"
+          >
             <div class="card h-100 doctor-card shadow-sm">
               <div class="card-img-wrapper">
                 <img :src="d.photo" class="card-img-top" alt="doc" />
@@ -49,7 +67,10 @@
                   <span class="fw-semibold">{{ d.slots.slice(0, 3).join(', ') }}</span>
                   <span v-if="d.slots.length > 3">…</span>
                 </div>
-                <router-link :to="`/booking/${d.id}`" class="btn btn-success mt-auto">
+                <router-link
+                  :to="`/booking/${d.id}`"
+                  class="btn btn-success mt-auto"
+                >
                   <i class="bi bi-calendar-check me-1"></i> Book Appointment
                 </router-link>
               </div>
@@ -64,7 +85,12 @@
           <li class="page-item" :class="{ disabled: page === 1 }">
             <button class="page-link" @click="go(page - 1)">Prev</button>
           </li>
-          <li v-for="p in pageCount" :key="p" class="page-item" :class="{ active: p === page }">
+          <li
+            v-for="p in pageCount"
+            :key="p"
+            class="page-item"
+            :class="{ active: p === page }"
+          >
             <button class="page-link" @click="go(p)">{{ p }}</button>
           </li>
           <li class="page-item" :class="{ disabled: page === pageCount }">
@@ -77,34 +103,49 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { doctors, SPECIALTIES } from '../data/doctors'
-import store from '../store/appointments'
+import { ref, computed } from "vue"
+import { doctors, SPECIALTIES } from "../data/doctors"
+import store from "../store/appointments"
 
-const q = ref('')
-const specialty = ref('All')
+const q = ref("")
+const specialty = ref("All")
 const page = ref(1)
 const pageSize = 6
 
 const theme = computed(() => store.theme.value)
 
+// Helper: normalize string (remove spaces, dots, lowercase)
+function normalize(str) {
+  return str
+    .toLowerCase()
+    .replace(/\s+/g, "") // remove spaces
+    .replace(/\./g, "") // remove dots
+}
+
 const filtered = computed(() => {
   let list = doctors
-  if (specialty.value !== 'All') {
-    list = list.filter(d => d.specialty === specialty.value)
+
+  if (specialty.value !== "All") {
+    list = list.filter((d) => d.specialty === specialty.value)
   }
+
   if (q.value.trim()) {
-    const t = q.value.toLowerCase()
-    list = list.filter(d =>
-      d.name.toLowerCase().includes(t) ||
-      d.specialty.toLowerCase().includes(t) ||
-      d.location.toLowerCase().includes(t)
-    )
+    const t = normalize(q.value)
+    list = list.filter((d) => {
+      return (
+        normalize(d.name).includes(t) ||
+        normalize(d.specialty).includes(t) ||
+        normalize(d.location).includes(t)
+      )
+    })
   }
+
   return list
 })
 
-const pageCount = computed(() => Math.max(1, Math.ceil(filtered.value.length / pageSize)))
+const pageCount = computed(() =>
+  Math.max(1, Math.ceil(filtered.value.length / pageSize))
+)
 const paged = computed(() => {
   const start = (page.value - 1) * pageSize
   return filtered.value.slice(start, start + pageSize)
